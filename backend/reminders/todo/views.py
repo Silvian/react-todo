@@ -7,6 +7,8 @@ from .models import Reminder
 
 
 class ReminderViewSet(ModelViewSet):
+    """Reminders API."""
+
     permission_classes = (AllowAny,)
     filter_backends = (SearchFilter,)
     serializer_class = ReminderSerializer

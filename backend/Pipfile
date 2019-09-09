@@ -11,6 +11,8 @@ djangorestframework = "*"
 django-cors-headers = "*"
 django-rest-swagger = "*"
 django-filter = "*"
+factory-boy = "*"
+faker = "*"
 
 [requires]
 python_version = "3.7"

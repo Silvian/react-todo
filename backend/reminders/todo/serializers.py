@@ -4,6 +4,8 @@ from .models import Reminder
 
 
 class ReminderSerializer(serializers.ModelSerializer):
+    """Reminders serializer."""
+
     class Meta:
         model = Reminder
         fields = (
