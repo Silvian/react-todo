@@ -25,7 +25,7 @@ class App extends Component {
 
     refreshList = () => {
         axios
-            .get("http://localhost:8000/api/v1/todo/")
+            .get("/api/v1/todo/")
             .then(res => this.setState({ todoList: res.data }))
             .catch(err => console.log(err));
     };
@@ -38,18 +38,18 @@ class App extends Component {
         this.toggle();
         if (item.id) {
             axios
-                .put(`http://localhost:8000/api/v1/todo/${item.id}/`, item)
+                .put(`/api/v1/todo/${item.id}/`, item)
                 .then(res => this.refreshList());
             return;
         }
         axios
-            .post("http://localhost:8000/api/v1/todo/", item)
+            .post("/api/v1/todo/", item)
             .then(res => this.refreshList());
     };
 
     handleDelete = item => {
         axios
-            .delete(`http://localhost:8000/api/v1/todo/${item.id}/`)
+            .delete(`/api/v1/todo/${item.id}/`)
             .then(res => this.refreshList());
     };
 
