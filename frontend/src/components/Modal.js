@@ -40,8 +40,8 @@ export default class CustomModal extends Component {
                             <Label for="title">Title</Label>
                             <Input
                                 type="text"
-                                name="title"
-                                value={this.state.activeItem.title}
+                                name="name"
+                                value={this.state.activeItem.name}
                                 onChange={this.handleChange}
                                 placeholder="Enter Todo Title"
                             />

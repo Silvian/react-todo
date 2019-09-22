@@ -1,32 +1,6 @@
 import React, { Component } from "react";
 import Modal from "./components/Modal";
-
-const todoItems = [
-    {
-        id: 1,
-        title: "Go to Market",
-        description: "Buy ingredients to prepare dinner",
-        completed: true
-    },
-    {
-        id: 2,
-        title: "Study",
-        description: "Read Algebra and History textbook for upcoming test",
-        completed: false
-    },
-    {
-        id: 3,
-        title: "Sally's books",
-        description: "Go to library to rent sally's books",
-        completed: true
-    },
-    {
-        id: 4,
-        title: "Article",
-        description: "Write article on how to use django with react",
-        completed: false
-    }
-];
+import axios from "axios";
 
 
 class App extends Component {
@@ -37,13 +11,24 @@ class App extends Component {
             modal: false,
             viewCompleted: false,
             activeItem: {
-                title: "",
+                name: "",
                 description: "",
                 completed: false
             },
-            todoList: todoItems
+            todoList: []
         };
     }
+
+    componentDidMount() {
+        this.refreshList();
+    }
+
+    refreshList = () => {
+        axios
+            .get("http://localhost:8000/api/v1/todo/")
+            .then(res => this.setState({ todoList: res.data }))
+            .catch(err => console.log(err));
+    };
 
     toggle = () => {
         this.setState({ modal: !this.state.modal });
@@ -51,15 +36,25 @@ class App extends Component {
 
     handleSubmit = item => {
         this.toggle();
-        alert("save" + JSON.stringify(item));
+        if (item.id) {
+            axios
+                .put(`http://localhost:8000/api/v1/todo/${item.id}/`, item)
+                .then(res => this.refreshList());
+            return;
+        }
+        axios
+            .post("http://localhost:8000/api/v1/todo/", item)
+            .then(res => this.refreshList());
     };
 
     handleDelete = item => {
-        alert("delete" + JSON.stringify(item));
+        axios
+            .delete(`http://localhost:8000/api/v1/todo/${item.id}/`)
+            .then(res => this.refreshList());
     };
 
     createItem = () => {
-        const item = { title: "", description: "", completed: false };
+        const item = { name: "", description: "", completed: false };
         this.setState({ activeItem: item, modal: !this.state.modal });
     };
 
@@ -109,20 +104,21 @@ class App extends Component {
                     }`}
                     title={item.description}
                 >
-                {item.title}
+                {item.name}
                 </span>
                 <span>
                     <button
                       onClick={() => this.editItem(item)}
                       className="btn btn-secondary mr-2"
                     >
-                    Edit
+                    {" "}
+                    Edit{" "}
                     </button>
                     <button
                       onClick={() => this.handleDelete(item)}
                       className="btn btn-danger"
                     >
-                    Delete
+                    Delete{" "}
                     </button>
                 </span>
             </li>
